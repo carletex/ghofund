@@ -12,7 +12,7 @@ const deployYourContract: DeployFunction = async function (hre: HardhatRuntimeEn
   // const wethGatewayAddress = "0x387d311e47e80b498169e6fb51d3193167d89F7D";
 
   // Check if the network is hardhat network then use mock address or else use the real address
-  if (hre.network.name === "hardhat") {
+  if (hre.network.name === "localhost") {
     // deploy GHOMock
     const ghoMock = await deploy("GHOMock", {
       from: deployer,
