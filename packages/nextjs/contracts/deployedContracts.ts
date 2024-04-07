@@ -7,7 +7,7 @@ import { GenericContractsDeclaration } from "~~/utils/scaffold-eth/contract";
 const deployedContracts = {
   31337: {
     GHOMock: {
-      address: "0x67d269191c92Caf3cD7723F116c85e6E9bf55933",
+      address: "0x5FbDB2315678afecb367f032d93F642f64180aa3",
       abi: [
         {
           inputs: [],
@@ -317,9 +317,59 @@ const deployedContracts = {
         transferFrom: "@openzeppelin/contracts/token/ERC20/ERC20.sol",
       },
     },
-    GhoFundStreams: {
-      address: "0xc3e53F4d16Ae77Db1c982e75a937B9f60FE63690",
+    GhoFundFactory: {
+      address: "0xCf7Ed3AccA5a467e9e704C703E8D87F634fB0Fc9",
       abi: [
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "contract GhoFundStreams",
+              name: "ghoFundStream",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "aavePoolAddress",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "GHOAddress",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "wethGatewayAddress",
+              type: "address",
+            },
+          ],
+          name: "GhoFundStreamCreated",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "count",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
         {
           inputs: [
             {
@@ -337,232 +387,13 @@ const deployedContracts = {
               name: "_GHOAddress",
               type: "address",
             },
-          ],
-          stateMutability: "nonpayable",
-          type: "constructor",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "to",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "GHOamount",
-              type: "uint256",
-            },
-          ],
-          name: "AddBuilder",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "previousOwner",
-              type: "address",
-            },
-            {
-              indexed: true,
-              internalType: "address",
-              name: "newOwner",
-              type: "address",
-            },
-          ],
-          name: "OwnershipTransferred",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "to",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "GHOamount",
-              type: "uint256",
-            },
-          ],
-          name: "UpdateBuilder",
-          type: "event",
-        },
-        {
-          anonymous: false,
-          inputs: [
-            {
-              indexed: true,
-              internalType: "address",
-              name: "to",
-              type: "address",
-            },
-            {
-              indexed: false,
-              internalType: "uint256",
-              name: "GHOamount",
-              type: "uint256",
-            },
-            {
-              indexed: false,
-              internalType: "string",
-              name: "reason",
-              type: "string",
-            },
-          ],
-          name: "Withdraw",
-          type: "event",
-        },
-        {
-          inputs: [],
-          name: "GHO",
-          outputs: [
-            {
-              internalType: "contract IERC20",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "aavePool",
-          outputs: [
-            {
-              internalType: "contract IPool",
-              name: "",
-              type: "address",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address payable",
-              name: "_builder",
-              type: "address",
-            },
-            {
-              internalType: "uint256",
-              name: "_GHOcap",
-              type: "uint256",
-            },
-          ],
-          name: "addBuilderStream",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address[]",
-              name: "_builders",
-              type: "address[]",
-            },
-            {
-              internalType: "uint256[]",
-              name: "_GHOcaps",
-              type: "uint256[]",
-            },
-          ],
-          name: "addBuilderStreamBatch",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address[]",
-              name: "_builders",
-              type: "address[]",
-            },
-          ],
-          name: "allBuildersData",
-          outputs: [
-            {
-              components: [
-                {
-                  internalType: "address",
-                  name: "builderAddress",
-                  type: "address",
-                },
-                {
-                  internalType: "uint256",
-                  name: "GHOcap",
-                  type: "uint256",
-                },
-                {
-                  internalType: "uint256",
-                  name: "unlockedGHOAmount",
-                  type: "uint256",
-                },
-              ],
-              internalType: "struct GhoFundStreams.BuilderData[]",
-              name: "",
-              type: "tuple[]",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "uint256",
-              name: "_GHOamount",
-              type: "uint256",
-            },
-          ],
-          name: "borrowGHO",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "frequency",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "owner",
-          outputs: [
             {
               internalType: "address",
-              name: "",
+              name: "_wethGatewayAddress",
               type: "address",
             },
           ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [],
-          name: "renounceOwnership",
+          name: "createGHOFundStream",
           outputs: [],
           stateMutability: "nonpayable",
           type: "function",
@@ -571,89 +402,26 @@ const deployedContracts = {
           inputs: [
             {
               internalType: "uint256",
-              name: "_GHOamount",
-              type: "uint256",
-            },
-            {
-              internalType: "string",
-              name: "_reason",
-              type: "string",
-            },
-          ],
-          name: "streamWithdraw",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "",
-              type: "address",
-            },
-          ],
-          name: "streamedBuilders",
-          outputs: [
-            {
-              internalType: "uint256",
-              name: "GHOcap",
-              type: "uint256",
-            },
-            {
-              internalType: "uint256",
-              name: "last",
-              type: "uint256",
-            },
-          ],
-          stateMutability: "view",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "newOwner",
-              type: "address",
-            },
-          ],
-          name: "transferOwnership",
-          outputs: [],
-          stateMutability: "nonpayable",
-          type: "function",
-        },
-        {
-          inputs: [
-            {
-              internalType: "address",
-              name: "_builder",
-              type: "address",
-            },
-          ],
-          name: "unlockedBuilderAmount",
-          outputs: [
-            {
-              internalType: "uint256",
               name: "",
               type: "uint256",
             },
           ],
+          name: "ghoFundStreams",
+          outputs: [
+            {
+              internalType: "contract GhoFundStreams",
+              name: "",
+              type: "address",
+            },
+          ],
           stateMutability: "view",
           type: "function",
-        },
-        {
-          stateMutability: "payable",
-          type: "receive",
         },
       ],
-      inheritedFunctions: {
-        owner: "@openzeppelin/contracts/access/Ownable.sol",
-        renounceOwnership: "@openzeppelin/contracts/access/Ownable.sol",
-        transferOwnership: "@openzeppelin/contracts/access/Ownable.sol",
-      },
+      inheritedFunctions: {},
     },
     PoolMock: {
-      address: "0xE6E340D132b5f46d1e472DebcD681B2aBc16e57E",
+      address: "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
       abi: [
         {
           inputs: [
