@@ -1,32 +1,34 @@
 import { useEffect, useMemo, useState } from "react";
 import { Address } from "./scaffold-eth";
 import { formatEther } from "viem";
-import { useScaffoldContractRead, useScaffoldEventHistory } from "~~/hooks/scaffold-eth";
+import { useContractRead } from "wagmi";
+import { GhoFundStreamsABI } from "~~/contracts/GhoFundStreamsABI";
+import { useEventHistory } from "~~/hooks/useEventHistory";
 import scaffoldConfig from "~~/scaffold.config";
 
-const BuildersInfo = () => {
+const BuildersInfo = ({ streamContract }: { streamContract: { address: string; abi: typeof GhoFundStreamsABI } }) => {
   const [selectedAddress, setSelectedAddress] = useState("");
   const [filteredEvents, setFilteredEvents] = useState<any[]>([]);
 
   const [builderList, setBuilderList] = useState<string[]>([]);
 
-  const { data: allBuildersData, isLoading: isLoadingBuilderData } = useScaffoldContractRead({
-    contractName: "GhoFundStreams",
+  const { data: allBuildersData, isLoading: isLoadingBuilderData } = useContractRead({
+    ...streamContract,
     functionName: "allBuildersData",
     args: [builderList],
   });
 
-  const { data: newContractWithdrawEvents, isLoading: isLoadingNewContractWithdrawEvents } = useScaffoldEventHistory({
-    contractName: "GhoFundStreams",
+  const { data: newContractWithdrawEvents, isLoading: isLoadingNewContractWithdrawEvents } = useEventHistory({
+    ...streamContract,
     eventName: "Withdraw",
-    fromBlock: scaffoldConfig.contracts.SandGardenStreams.fromBlock,
+    fromBlock: scaffoldConfig.contracts.GhoFundStreams.fromBlock,
     blockData: true,
   });
 
-  const { data: addBuilderEvents, isLoading: isLoadingBuilderEvents } = useScaffoldEventHistory({
-    contractName: "GhoFundStreams",
+  const { data: addBuilderEvents, isLoading: isLoadingBuilderEvents } = useEventHistory({
+    ...streamContract,
     eventName: "AddBuilder",
-    fromBlock: scaffoldConfig.contracts.SandGardenStreams.fromBlock,
+    fromBlock: scaffoldConfig.contracts.GhoFundStreams.fromBlock,
   });
 
   useEffect(() => {
