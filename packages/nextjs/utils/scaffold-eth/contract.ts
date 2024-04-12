@@ -72,7 +72,7 @@ export const contracts = contractsData as GenericContractsDeclaration | null;
 
 type ConfiguredChainId = (typeof scaffoldConfig)["targetNetworks"][0]["id"];
 
-type IsContractDeclarationMissing<TYes, TNo> = typeof contractsData extends { [key in ConfiguredChainId]: any }
+export type IsContractDeclarationMissing<TYes, TNo> = typeof contractsData extends { [key in ConfiguredChainId]: any }
   ? TNo
   : TYes;
 
@@ -279,6 +279,33 @@ export type UseScaffoldEventHistoryData<
         args: AbiParametersToPrimitiveTypes<TEvent["inputs"]> &
           GetEventArgs<
             ContractAbi<TContractName>,
+            TEventName,
+            {
+              IndexedOnly: false;
+            }
+          >;
+        block: TBlockData extends true ? Block<bigint, true> : null;
+        receipt: TReceiptData extends true ? GetTransactionReturnType : null;
+        transaction: TTransactionData extends true ? GetTransactionReceiptReturnType : null;
+      }[]
+    >
+  | undefined;
+
+export type UseEventHistoryData<
+  TAbi extends Abi,
+  TEventName extends ExtractAbiEventNames<TAbi>,
+  TBlockData extends boolean = false,
+  TTransactionData extends boolean = false,
+  TReceiptData extends boolean = false,
+  TEvent extends ExtractAbiEvent<TAbi, TEventName> = ExtractAbiEvent<TAbi, TEventName>,
+> =
+  | IsContractDeclarationMissing<
+      any[],
+      {
+        log: Log<bigint, number, false, TEvent, false, [TEvent], TEventName>;
+        args: AbiParametersToPrimitiveTypes<TEvent["inputs"]> &
+          GetEventArgs<
+            TAbi,
             TEventName,
             {
               IndexedOnly: false;

@@ -1,13 +1,16 @@
 import { useEffect, useState } from "react";
+import { useRouter } from "next/router";
 import type { NextPage } from "next";
 import { createPublicClient, http, parseEther } from "viem";
 import { normalize } from "viem/ens";
-import { mainnet, useAccount, useBalance } from "wagmi";
+import { mainnet, useAccount, useBalance, useContractWrite } from "wagmi";
+import { WriteContractResult } from "wagmi/dist/actions";
 import { QuestionMarkCircleIcon } from "@heroicons/react/24/outline";
 import BuildersInfo from "~~/components/BuildersInfo";
 import { MetaHeader } from "~~/components/MetaHeader";
-import { Address, EtherInput, InputBase, SIGNED_NUMBER_REGEX } from "~~/components/scaffold-eth";
-import { useDeployedContractInfo, useScaffoldContractWrite, useTransactor } from "~~/hooks/scaffold-eth";
+import { Address, EtherInput, InputBase, SIGNED_NUMBER_REGEX, getParsedError } from "~~/components/scaffold-eth";
+import { GhoFundStreamsABI } from "~~/contracts/GhoFundStreamsABI";
+import { useTransactor } from "~~/hooks/scaffold-eth";
 import { AaveData, fetchAaveDetails } from "~~/utils/aave";
 import { notification } from "~~/utils/scaffold-eth";
 
@@ -19,9 +22,12 @@ const Loading = () => (
   </div>
 );
 
-const Admin: NextPage = () => {
+const StreamContractAddress: NextPage = () => {
   const [amount, setAmount] = useState("");
   const [wallets, setWallets] = useState<string[]>([]);
+  const router = useRouter();
+  const { streamContractAddress } = router.query as { streamContractAddress: string };
+  const streamContract = { abi: GhoFundStreamsABI, address: streamContractAddress } as const;
 
   const [invalidEnsNames, setInvalidEnsNames] = useState<string[]>([]);
 
@@ -75,15 +81,13 @@ const Admin: NextPage = () => {
     setWallets(uniqueAddresses);
   }
 
-  const { data: streamContract } = useDeployedContractInfo("GhoFundStreams");
-
   const { data: balanceOfGHO } = useBalance({
     address: streamContract?.address,
     token: "0xc4bF5CbDaBE595361438F8c6a187bDc330539c60",
   });
 
-  const { writeAsync: addBatchBuilders } = useScaffoldContractWrite({
-    contractName: "GhoFundStreams",
+  const { writeAsync: addBatchBuilders } = useContractWrite({
+    ...streamContract,
     functionName: "addBuilderStreamBatch",
     // create an array of wallets length each value with amount value
     args: [wallets, [...Array.from({ length: wallets?.length }, () => (amount ? parseEther(amount) : 0n))]],
@@ -106,19 +110,34 @@ const Admin: NextPage = () => {
   const [aaveDetailsLoading, setAaveDetailsLoading] = useState(true);
   const { address: connectedAddress } = useAccount();
 
-  const { writeAsync: borrowGHO } = useScaffoldContractWrite({
-    contractName: "GhoFundStreams",
+  const { writeAsync: borrowGHO } = useContractWrite({
+    ...streamContract,
     functionName: "borrowGHO",
     args: [parseEther(amount || "0")],
   });
 
-  const { writeAsync: doWithdraw } = useScaffoldContractWrite({
-    contractName: "GhoFundStreams",
+  const { writeAsync: doWithdraw } = useContractWrite({
+    ...streamContract,
     functionName: "streamWithdraw",
     args: [parseEther(amount || "0"), reason],
   });
 
-  const donateTxn = useTransactor();
+  const writeTransactor = useTransactor();
+
+  const wrapWriteActionInTransactor = async (action?: () => Promise<WriteContractResult>) => {
+    if (!action) {
+      notification.error("Action not defined");
+      return;
+    }
+    try {
+      const writeTxResult = await writeTransactor(() => action());
+
+      return writeTxResult;
+    } catch (e: any) {
+      const message = getParsedError(e);
+      notification.error(message);
+    }
+  };
 
   useEffect(() => {
     const getAaveDetails = async () => {
@@ -317,7 +336,7 @@ const Admin: NextPage = () => {
           </div>
         </div>
         {/* Builders */}
-        <BuildersInfo />
+        <BuildersInfo streamContract={streamContract} />
       </div>
 
       {/* Withdraw Modal */}
@@ -334,7 +353,7 @@ const Admin: NextPage = () => {
             <div className="flex flex-col gap-6">
               <InputBase value={reason} placeholder="Reason for withdrawal" onChange={value => setReason(value)} />
               <EtherInput value={amount} onChange={value => setAmount(value)} />
-              <button className="btn btn-primary btn-md" onClick={() => doWithdraw()}>
+              <button className="btn btn-primary btn-md" onClick={() => wrapWriteActionInTransactor(doWithdraw)}>
                 Withdraw
               </button>
             </div>
@@ -359,7 +378,7 @@ const Admin: NextPage = () => {
                 className="btn btn-primary btn-md"
                 onClick={async () => {
                   if (connectedAddress && streamContract?.address) {
-                    await donateTxn({
+                    await writeTransactor({
                       to: streamContract?.address,
                       value: parseEther(amount),
                       account: connectedAddress,
@@ -406,7 +425,7 @@ const Admin: NextPage = () => {
                 className="btn btn-primary btn-md"
                 onClick={async () => {
                   if (connectedAddress && streamContract?.address) {
-                    await addBatchBuilders();
+                    await wrapWriteActionInTransactor(addBatchBuilders);
                   }
                 }}
               >
@@ -445,7 +464,7 @@ const Admin: NextPage = () => {
                 className="btn btn-primary btn-md"
                 onClick={async () => {
                   if (connectedAddress && streamContract?.address) {
-                    await borrowGHO();
+                    await wrapWriteActionInTransactor(borrowGHO);
                   }
                 }}
               >
@@ -459,4 +478,4 @@ const Admin: NextPage = () => {
   );
 };
 
-export default Admin;
+export default StreamContractAddress;
