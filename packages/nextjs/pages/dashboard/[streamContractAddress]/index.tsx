@@ -22,10 +22,6 @@ const Loading = () => (
   </div>
 );
 
-// const router = useRouter();
-// const { streamContractAddress } = router.query as { streamContractAddress: string };
-// const streamContract = { abi: GhoFundStreamsABI, address: streamContractAddress } as const;
-
 const StreamContractAddress: NextPage = () => {
   const [amount, setAmount] = useState("");
   const [wallets, setWallets] = useState<string[]>([]);
