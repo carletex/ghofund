@@ -58,7 +58,7 @@ const Home: NextPage = () => {
               DeFi opportunities and facilitate GHO streaming for DAO contributors.
             </p>
             <button disabled={!connectedAddress} onClick={handleCreateGhoFundStreams} className="btn btn-primary">
-              Create your DAO
+              Create your GHOFund treasury contract
             </button>
           </div>
         </div>
