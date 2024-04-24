@@ -1,14 +1,12 @@
 # GHOFund 
 
-*ETHGlobal LFGHO Hackathon project.*
-
-Welcome to GHOFund! We have developed a Treasury Management Platform to bring deep insights and effective management to DAO treasury.
+A Treasury Management Platform to bring deep insights and effective management to DAO treasury. Incubated at ETHGlobal LFGHO Hackathon.
 
 ## Features
 
-- **Simplified Payment Process for Contributors**: GHOFund provides DAOs the ability to craft streaming contracts. Streaming contrracts are smart contract that allows for the continuous, real-time transfer of assets. A streaming contract send funds at a fixed rate over a period of time.
-- **Reliable Income for Contributors**: By utilizing GHO for compensation, we promote financial stability for members.
-- **Comprehensive Treasury Overview & direct integration with DeFi**:The platform provides a clear view of a DAO's finances, including collateral status, GHO balance, and overall financial health. You can effectively manage and view all your finances on a single dashboard. 
+- **On-demand Treasury Contract Creation**: GHOFund has a factory smart contract, enabling DAOs to create treasury contracts as needed. This functionality enhances scalability and flexibility in treasury management.
+- **Simplified Payment Process for Contributors**: GHOFund empowers DAOs to craft treasury contracts with streaming capabilities. Streaming contracts send funds at a fixed rate over a period of time and are utilized to pay contributors of a project. GHO is paid out through these streaming contracts, providing financial stability for members.
+- **Comprehensive Treasury Overview & direct integration with DeFi**: The platform offers a clear view of a DAO's finances, including collateral status, GHO balance, and overall financial health. Manage and view all your finances on a single dashboard for effective oversight.
 
 ## Built Using
 - [Scaffold-ETH 2](https://scaffoldeth.io/)
