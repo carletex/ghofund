@@ -49,11 +49,9 @@ const Home: NextPage = () => {
   return (
     <>
       <MetaHeader />
-      {/* Hero section */}
-      {/* That 220px is approx, fix it in future */}
       <div className="flex-1">
-        <section className="w-full py-12 md:py-24 lg:py-32 bg-base-100">
-          <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-10">
+        <section className="w-full py-12 flex items-center justify-center md:py-24 lg:py-32 bg-base-100">
+          <div className="container grid items-center gap-6 px-4 md:px-6 lg:grid-cols-2 lg:gap-0 lg:max-w-6xl">
             <div className="space-y-2 flex flex-col">
               <h1 className="text-3xl text-primary font-bold tracking-tighter md:text-4xl/tight lg:text-5xl lg:leading-[3.5rem]">
                 Comprehensive Treasury Management for DAOs
@@ -75,12 +73,12 @@ const Home: NextPage = () => {
                 </a>
               </div>
             </div>
-            <div className="flex justify-center">
+            <div className="flex justify-center lg:justify-end">
               <Image src="/logo.png" height={250} width={250} alt="Logo" />
             </div>
           </div>
         </section>
-        <section className="w-full py-12 md:py-24 lg:py-32">
+        <section className="w-full py-12 md:py-24 lg:py-32 flex items-center justify-center">
           <div className="container space-y-12 px-4 md:px-6">
             <div className="flex flex-col items-center justify-center space-y-4 text-center">
               <div className="space-y-2">
