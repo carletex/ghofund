@@ -5,6 +5,7 @@
 :root,
 [data-theme] {
   background: oklch(var(--b2));
+  scroll-behavior: smooth;
 }
 
 body {
