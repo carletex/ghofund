@@ -13,7 +13,9 @@ const targetNetwork = targetNetworks[0];
 export const useCreateGhoFundStreams = () => {
   const { address: connectedAddress } = useAccount();
 
+  // @ts-ignore this may or maynot be present
   const { data: GHOMockContract } = useDeployedContractInfo("GHOMock");
+  // @ts-ignore this may or maynot be present
   const { data: PoolMockContract } = useDeployedContractInfo("PoolMock");
 
   const poolAddress = targetNetwork.id === hardhat.id ? PoolMockContract?.address : sepoliaPoolAddress;

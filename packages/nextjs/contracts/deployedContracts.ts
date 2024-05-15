@@ -513,6 +513,109 @@ const deployedContracts = {
     },
   },
   11155111: {
+    GhoFundFactory: {
+      address: "0x0189C48307594A4A542E4851789e9585198d7420",
+      abi: [
+        {
+          anonymous: false,
+          inputs: [
+            {
+              indexed: true,
+              internalType: "contract GhoFundStreams",
+              name: "ghoFundStream",
+              type: "address",
+            },
+            {
+              indexed: true,
+              internalType: "address",
+              name: "owner",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "aavePoolAddress",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "GHOAddress",
+              type: "address",
+            },
+            {
+              indexed: false,
+              internalType: "address",
+              name: "wethGatewayAddress",
+              type: "address",
+            },
+          ],
+          name: "GhoFundStreamCreated",
+          type: "event",
+        },
+        {
+          inputs: [],
+          name: "count",
+          outputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "address",
+              name: "_owner",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_aavePoolAddress",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_GHOAddress",
+              type: "address",
+            },
+            {
+              internalType: "address",
+              name: "_wethGatewayAddress",
+              type: "address",
+            },
+          ],
+          name: "createGHOFundStream",
+          outputs: [],
+          stateMutability: "nonpayable",
+          type: "function",
+        },
+        {
+          inputs: [
+            {
+              internalType: "uint256",
+              name: "",
+              type: "uint256",
+            },
+          ],
+          name: "ghoFundStreams",
+          outputs: [
+            {
+              internalType: "contract GhoFundStreams",
+              name: "",
+              type: "address",
+            },
+          ],
+          stateMutability: "view",
+          type: "function",
+        },
+      ],
+      inheritedFunctions: {},
+    },
     GhoFundStreams: {
       address: "0xF0244ab9ccD051CecC626d953CB34419b91A150E",
       abi: [
