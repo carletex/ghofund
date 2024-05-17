@@ -69,9 +69,7 @@ export const useEventHistory = <
   const readEvents = async (fromBlock?: bigint) => {
     setIsLoading(true);
     try {
-      if (!deployedContractData) {
-        throw new Error("Contract not found");
-      }
+      if (!deployedContractData.address || !deployedContractData.abi) throw new Error("Contract address not found");
 
       if (!enabled) {
         throw new Error("Hook disabled");
@@ -175,8 +173,6 @@ export const useEventHistory = <
       >,
     [events],
   );
-
-  console.log("eventHistoryData", eventHistoryData);
 
   return {
     data: eventHistoryData,

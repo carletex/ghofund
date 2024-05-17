@@ -54,8 +54,6 @@ const BuildersInfo = ({ streamContract }: { streamContract: { address: string; a
 
   const sortedBuilders = allBuildersData && [...allBuildersData].reverse();
 
-  console.log("All withdraw events are", sortedWithdrawEvents);
-
   return (
     <div className="flex flex-col md:flex-row gap-3">
       {/* Builders Div */}
